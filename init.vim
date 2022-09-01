@@ -2,6 +2,7 @@ set scrolloff=8
 set number
 set relativenumber
 set tabstop=4 softtabstop=4
+set shiftwidth=4
 set expandtab
 set smartindent
 
@@ -11,6 +12,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'ayu-theme/ayu-vim'
 Plug 'preservim/nerdtree'
 Plug 'airblade/vim-gitgutter'
+Plug 'Pocco81/auto-save.nvim'
 call plug#end()
 
 set termguicolors     " enable true colors support
@@ -20,11 +22,25 @@ colorscheme ayu
 let mapleader = " "
 nnoremap <leader>pv :Vex<CR>
 nnoremap <leader><CR> :so ~/.config/nvim/init.vim<CR>
-nnoremap <S-f> :FZF<CR>
+nnoremap <leader>q :q<CR>
+" Terminal Remaps
+tnoremap <Esc> <C-\><C-n>
+" NERDTree Remaps
+nnoremap <leader>f :NERDTreeToggle<CR>
+" FZR Remaps
+nnoremap <S-f> :Files<CR>
 nnoremap <C-p> :GFiles<CR>
+" Unmap <ESC> binding for fzf buffer if binding exists or suppress unmap error
+au FileType fzf silent! tunmap <Esc>
+" QuickFixList Remaps
 nnoremap <leader>cn :cnext<CR>
 nnoremap <leader>cp :cprev<CR>
+" GitGutter Remaps
+nnoremap <leader>gd :GitGutterDiffOrig<CR>
+" Window controls Remaps
 nnoremap <C-h> <C-w>h
 nnoremap <C-l> <C-w>l
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
+
+
