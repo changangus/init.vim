@@ -24,7 +24,7 @@ nnoremap <leader>pv :Vex<CR>
 nnoremap <leader><CR> :so ~/.config/nvim/init.vim<CR>
 nnoremap <leader>q :q<CR>
 " Terminal Remaps
-tnoremap <Esc> <C-\><C-n>
+tnoremap jj <C-\><C-n>
 " NERDTree Remaps
 nnoremap <leader>f :NERDTreeToggle<CR>
 " FZR Remaps
