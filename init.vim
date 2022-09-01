@@ -26,8 +26,8 @@ nnoremap <leader>pv :Vex<CR>
 nnoremap <leader><CR> :so ~/.config/nvim/init.vim<CR>
 nnoremap <leader>q :q<CR>
 nnoremap <leader>s :20 split \| :terminal<CR>
-nnoremap <leader>v :80 vsplit<CR>
-nnoremap <leader>> :80 vsplit \| :terminal<CR>
+nnoremap <leader>v :vsplit<CR>
+nnoremap <leader>> :vsplit \| :terminal<CR>
 
 " Terminal Remaps
 tnoremap jj <C-\><C-n>
