@@ -5,6 +5,8 @@ set tabstop=4 softtabstop=4
 set shiftwidth=4
 set expandtab
 set smartindent
+set splitbelow
+set noequalalways
 
 call plug#begin('~/.vim/plugged')
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
@@ -23,6 +25,10 @@ let mapleader = " "
 nnoremap <leader>pv :Vex<CR>
 nnoremap <leader><CR> :so ~/.config/nvim/init.vim<CR>
 nnoremap <leader>q :q<CR>
+nnoremap <leader>s :20 split \| :terminal<CR>
+nnoremap <leader>v :80 vsplit<CR>
+nnoremap <leader>> :80 vsplit \| :terminal<CR>
+
 " Terminal Remaps
 tnoremap jj <C-\><C-n>
 " NERDTree Remaps
