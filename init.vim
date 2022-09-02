@@ -45,9 +45,9 @@ syntax on
 colorscheme ayu
 
 let mapleader = " "
-nnoremap <leader>pv :vex<cr>
+nnoremap <leader>pv :Vex<cr>
 nnoremap <leader><cr> :so ~/.config/nvim/init.vim<cr>
-nnoremap <nowait> <leader>q :q<cr>
+nnoremap <nowait> <leader>e :q<cr>
 nnoremap <leader>s :15 split \| :terminal<cr>
 nnoremap <leader>v :vsplit<cr>
 nnoremap <leader>> :vsplit \| :terminal<cr>
@@ -55,17 +55,17 @@ nnoremap <leader>> :vsplit \| :terminal<cr>
 " terminal remaps
 tnoremap xx <c-\><c-n>
 " nerdtree remaps
-nnoremap <leader>ft :nerdtreetoggle<cr>
+nnoremap <leader>ft :NERDtreetoggle<cr>
 " fzr remaps
-nnoremap <s-f> :files<cr>
-nnoremap <c-p> :gfiles<cr>
+nnoremap <s-f> :Files<cr>
+nnoremap <c-p> :Gfiles<cr>
 " unmap <esc> binding for fzf buffer if binding exists or suppress unmap error
 au filetype fzf silent! tunmap <esc>
 " quickfixlist remaps
 nnoremap <leader>cn :cnext<cr>
 nnoremap <leader>cp :cprev<cr>
 " gitgutter remaps
-nnoremap <leader>gd :gitgutterdifforig<cr>
+nnoremap <leader>gd :GitGutterDiffOrig<cr>
 " window controls remaps
 nnoremap <c-h> <c-w>h
 nnoremap <c-l> <c-w>l
