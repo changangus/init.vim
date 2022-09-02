@@ -30,7 +30,7 @@ nnoremap <leader>v :vsplit<CR>
 nnoremap <leader>> :vsplit \| :terminal<CR>
 
 " Terminal Remaps
-tnoremap jj <C-\><C-n>
+tnoremap xx <C-\><C-n>
 " NERDTree Remaps
 nnoremap <leader>f :NERDTreeToggle<CR>
 " FZR Remaps
