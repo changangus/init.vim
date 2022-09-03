@@ -18,6 +18,7 @@ Plug 'junegunn/fzf.vim'
 " colorscheme
 Plug 'ayu-theme/ayu-vim'
 Plug 'larsbs/vimterial_dark'
+Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
 " nerdtree
 Plug 'preservim/nerdtree'
 " git stuff
@@ -42,7 +43,7 @@ call plug#end()
 set termguicolors     " enable true colors support
 let ayucolor="dark"   " for dark version of theme
 syntax on
-colorscheme ayu
+colorscheme tokyonight
 
 let mapleader = " "
 nnoremap <leader>pv :Vex<cr>
@@ -55,7 +56,7 @@ nnoremap <leader>> :vsplit \| :terminal<cr>
 " terminal remaps
 tnoremap xx <c-\><c-n>
 " nerdtree remaps
-nnoremap <leader>ft :NERDtreetoggle<cr>
+nnoremap <leader>ft :NERDTreeToggle<cr>
 " fzr remaps
 nnoremap <s-f> :Files<cr>
 nnoremap <c-p> :Gfiles<cr>
