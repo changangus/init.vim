@@ -3,6 +3,7 @@ set number
 set relativenumber
 set tabstop=2 softtabstop=2
 set shiftwidth=2
+set cmdheight=1
 set expandtab
 set smartindent
 set splitbelow
@@ -10,6 +11,10 @@ set noequalalways
 filetype on
 filetype indent on
 filetype plugin on
+syntax on
+
+" enable folding
+let g:markdown_folding = 1
 
 call plug#begin('~/.vim/plugged')
 " fuzzy finder
@@ -32,6 +37,11 @@ Plug 'ianks/vim-tsx', { 'for': 'typescript.tsx' }
 Plug 'HerringtonDarkholme/yats.vim', { 'for': 'typescript' }
 " syntax hightlight for .jsx
 Plug 'mxw/vim-jsx'
+" syntax highlight for .sol
+Plug 'tomlion/vim-solidity'
+" syntax highlight for .md
+Plug 'godlygeek/tabular'
+Plug 'preservim/vim-markdown'
 " Intellisense for vim
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " startup screen
@@ -44,12 +54,18 @@ Plug 'mattn/emmet-vim'
 " React
 Plug 'SirVer/ultisnips'
 Plug 'mlaursen/vim-react-snippets'
+" Notes
+Plug 'xolox/vim-notes'
+Plug 'xolox/vim-misc'
 call plug#end()
 
 set termguicolors     " enable true colors support
 let ayucolor="dark"   " for dark version of theme
-syntax on
 colorscheme codedark
+hi Normal guibg=NONE ctermbg=NONE
+highlight clear LineNr
+highlight clear SignColumn 
+highlight clear StatusLine
 
 let mapleader = " "
 nnoremap <leader>pv :Vex<CR>
@@ -81,5 +97,6 @@ nnoremap <c-h> <c-w>h
 nnoremap <c-l> <c-w>l
 nnoremap <c-j> <c-w>j
 nnoremap <c-k> <c-w>k
-
+" Notes remaps 
+nnoremap <leader>nn :Note<CR>
 source $HOME/.config/nvim/plug-config/coc.vim
