@@ -57,6 +57,15 @@ Plug 'mlaursen/vim-react-snippets'
 " Notes
 Plug 'xolox/vim-notes'
 Plug 'xolox/vim-misc'
+" RipGrep 
+Plug 'jremmen/vim-ripgrep'
+" Prettier
+" post install (yarn install | npm install) then load plugin only for editing supported files
+Plug 'prettier/vim-prettier', { 'do': 'yarn install --frozen-lockfile --production' }
+" ESLint
+Plug 'eslint/eslint'
+" Github CoPilot
+Plug 'github/copilot.vim'
 call plug#end()
 
 set termguicolors     " enable true colors support
@@ -66,6 +75,7 @@ hi Normal guibg=NONE ctermbg=NONE
 highlight clear LineNr
 highlight clear SignColumn 
 highlight clear StatusLine
+hi EndOfBuffer guibg=NONE ctermbg=NONE 
 
 let mapleader = " "
 nnoremap <leader>pv :Vex<CR>
@@ -91,7 +101,7 @@ nnoremap <leader>cp :cprev<CR>
 " gitgutter remaps
 nnoremap <leader>gd :GitGutterDiffOrig<CR>
 " Emmet remap 
-nnoremap <leader>, <C-y>,<CR>
+imap <F8> <c-y>,<CR> 
 " window controls remaps
 nnoremap <c-h> <c-w>h
 nnoremap <c-l> <c-w>l
@@ -99,4 +109,7 @@ nnoremap <c-j> <c-w>j
 nnoremap <c-k> <c-w>k
 " Notes remaps 
 nnoremap <leader>nn :Note<CR>
+" Copy relative path to clipboard
+nnoremap <leader>rp :let @+ = expand('%:')<CR>
+
 source $HOME/.config/nvim/plug-config/coc.vim
