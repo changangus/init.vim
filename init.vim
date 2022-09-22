@@ -8,6 +8,7 @@ set expandtab
 set smartindent
 set splitbelow
 set noequalalways
+set mouse=a
 filetype on
 filetype indent on
 filetype plugin on
@@ -59,23 +60,29 @@ Plug 'xolox/vim-notes'
 Plug 'xolox/vim-misc'
 " RipGrep 
 Plug 'jremmen/vim-ripgrep'
-" Prettier
-" post install (yarn install | npm install) then load plugin only for editing supported files
-Plug 'prettier/vim-prettier', { 'do': 'yarn install --frozen-lockfile --production' }
 " ESLint
 Plug 'eslint/eslint'
 " Github CoPilot
 Plug 'github/copilot.vim'
+" Icons
+Plug 'ryanoasis/vim-devicons'
 call plug#end()
+
+let NERDTreeStatusline="%{matchstr(getline('.'), '\\s\\zs\\w\\(.*\\)')}"
 
 set termguicolors     " enable true colors support
 let ayucolor="dark"   " for dark version of theme
 colorscheme codedark
+
 hi Normal guibg=NONE ctermbg=NONE
-highlight clear LineNr
-highlight clear SignColumn 
-highlight clear StatusLine
-hi EndOfBuffer guibg=NONE ctermbg=NONE 
+hi StatusLine guibg=NONE ctermbg=NONE
+hi StatusLineNC guibg=NONE ctermbg=NONE
+hi SignColumn guibg=NONE ctermbg=NONE 
+hi LineNr guibg=NONE ctermbg=NONE
+hi CursorLineNr guibg=NONE ctermbg=NONE
+hi EndOfBuffer guibg=NONE ctermbg=NONE
+hi WinSeparator guibg=NONE ctermbg=NONE 
+hi Directory guibg=NONE ctermbg=NONE 
 
 let mapleader = " "
 nnoremap <leader>pv :Vex<CR>
@@ -111,5 +118,6 @@ nnoremap <c-k> <c-w>k
 nnoremap <leader>nn :Note<CR>
 " Copy relative path to clipboard
 nnoremap <leader>rp :let @+ = expand('%:')<CR>
+nnoremap <leader>fl :CocCommand eslint.executeAutofix<CR>
 
 source $HOME/.config/nvim/plug-config/coc.vim
