@@ -108,7 +108,7 @@ nnoremap <leader>cp :cprev<CR>
 " gitgutter remaps
 nnoremap <leader>gd :GitGutterDiffOrig<CR>
 " Emmet remap 
-imap <F8> <c-y>,<CR> 
+let g:user_emmet_leader_key=','
 " window controls remaps
 nnoremap <c-h> <c-w>h
 nnoremap <c-l> <c-w>l
@@ -119,5 +119,6 @@ nnoremap <leader>nn :Note<CR>
 " Copy relative path to clipboard
 nnoremap <leader>rp :let @+ = expand('%:')<CR>
 nnoremap <leader>fl :CocCommand eslint.executeAutofix<CR>
-
+" copy to clipboard remap
+xnoremap <leader>y "*y<CR>
 source $HOME/.config/nvim/plug-config/coc.vim
