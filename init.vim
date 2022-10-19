@@ -66,6 +66,10 @@ Plug 'eslint/eslint'
 Plug 'github/copilot.vim'
 " Icons
 Plug 'ryanoasis/vim-devicons'
+" Harpoon 
+Plug 'nvim-lua/plenary.nvim' " don't forget to add this one if you don't have it yet!
+Plug 'ThePrimeagen/harpoon'
+Plug 'airblade/vim-rooter'
 call plug#end()
 
 let NERDTreeStatusline="%{matchstr(getline('.'), '\\s\\zs\\w\\(.*\\)')}"
@@ -83,6 +87,56 @@ hi CursorLineNr guibg=NONE ctermbg=NONE
 hi EndOfBuffer guibg=NONE ctermbg=NONE
 hi WinSeparator guibg=NONE ctermbg=NONE 
 hi Directory guibg=NONE ctermbg=NONE 
+
+let g:fzf_tags_command = 'ctags -R'
+" Border color
+let g:fzf_layout = {'up':'~90%', 'window': { 'width': 0.8, 'height': 0.8,'yoffset':0.5,'xoffset': 0.5, 'highlight': 'Todo', 'border': 'sharp' } }
+
+let $FZF_DEFAULT_COMMAND="rg --files --hidden"
+
+" Customize fzf colors to match your color scheme
+let g:fzf_colors =
+\ { 'fg':      ['fg', 'Normal'],
+  \ 'bg':      ['bg', 'Normal'],
+  \ 'hl':      ['fg', 'Comment'],
+  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+  \ 'hl+':     ['fg', 'Statement'],
+  \ 'info':    ['fg', 'PreProc'],
+  \ 'border':  ['fg', 'Ignore'],
+  \ 'prompt':  ['fg', 'Conditional'],
+  \ 'pointer': ['fg', 'Exception'],
+  \ 'marker':  ['fg', 'Keyword'],
+  \ 'spinner': ['fg', 'Label'],
+  \ 'header':  ['fg', 'Comment'] }
+
+"Get Files
+command! -bang -nargs=? -complete=dir Files
+    \ call fzf#vim#files(<q-args>, fzf#vim#with_preview({'options': ['--layout=reverse', '--info=inline']}), <bang>0)
+
+
+" Get text in files with Rg
+command! -bang -nargs=* Rg
+  \ call fzf#vim#grep(
+  \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1,
+  \   fzf#vim#with_preview(), <bang>0)
+
+" Ripgrep advanced
+function! RipgrepFzf(query, fullscreen)
+  let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case %s || true'
+  let initial_command = printf(command_fmt, shellescape(a:query))
+  let reload_command = printf(command_fmt, '{q}')
+  let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
+  call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
+endfunction
+
+command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
+
+" Git grep
+command! -bang -nargs=* GGrep
+  \ call fzf#vim#grep(
+  \   'git grep --line-number '.shellescape(<q-args>), 0,
+  \   fzf#vim#with_preview({'dir': systemlist('git rev-parse --show-toplevel')[0]}), <bang>0)
 
 let mapleader = " "
 nnoremap <leader>pv :Vex<CR>
@@ -118,7 +172,12 @@ nnoremap <c-k> <c-w>k
 nnoremap <leader>nn :Note<CR>
 " Copy relative path to clipboard
 nnoremap <leader>rp :let @+ = expand('%:')<CR>
+" Coc Commands
 nnoremap <leader>fl :CocCommand eslint.executeAutofix<CR>
+nnoremap <leader>gb :CocCommand git.showBlameDoc<CR>
 " copy to clipboard remap
 xnoremap <leader>y "*y<CR>
+" Harpoon remaps
+nnoremap <leader>lv :lua require'harpoon.ui'.toggle_quick_menu()<CR>
+nnoremap <leader>la :lua require'harpoon.mark'.add_file()<CR>
 source $HOME/.config/nvim/plug-config/coc.vim
