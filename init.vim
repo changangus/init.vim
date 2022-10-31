@@ -8,14 +8,16 @@ set expandtab
 set smartindent
 set splitbelow
 set noequalalways
-set mouse=a
 filetype on
 filetype indent on
 filetype plugin on
 syntax on
+set mouse=a
 
 " enable folding
 let g:markdown_folding = 1
+
+let g:airline_theme='angr'
 
 call plug#begin('~/.vim/plugged')
 " fuzzy finder
@@ -58,8 +60,6 @@ Plug 'mlaursen/vim-react-snippets'
 " Notes
 Plug 'xolox/vim-notes'
 Plug 'xolox/vim-misc'
-" RipGrep 
-Plug 'jremmen/vim-ripgrep'
 " ESLint
 Plug 'eslint/eslint'
 " Github CoPilot
@@ -70,7 +70,10 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'nvim-lua/plenary.nvim' " don't forget to add this one if you don't have it yet!
 Plug 'ThePrimeagen/harpoon'
 Plug 'airblade/vim-rooter'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 call plug#end()
+
 
 let NERDTreeStatusline="%{matchstr(getline('.'), '\\s\\zs\\w\\(.*\\)')}"
 
@@ -84,7 +87,7 @@ hi StatusLineNC guibg=NONE ctermbg=NONE
 hi SignColumn guibg=NONE ctermbg=NONE 
 hi LineNr guibg=NONE ctermbg=NONE
 hi CursorLineNr guibg=NONE ctermbg=NONE
-hi EndOfBuffer guibg=NONE ctermbg=NONE
+hi EndOfBuffer guibg=NONE ctermbg=NONE 
 hi WinSeparator guibg=NONE ctermbg=NONE 
 hi Directory guibg=NONE ctermbg=NONE 
 
@@ -110,11 +113,6 @@ let g:fzf_colors =
   \ 'spinner': ['fg', 'Label'],
   \ 'header':  ['fg', 'Comment'] }
 
-"Get Files
-command! -bang -nargs=? -complete=dir Files
-    \ call fzf#vim#files(<q-args>, fzf#vim#with_preview({'options': ['--layout=reverse', '--info=inline']}), <bang>0)
-
-
 " Get text in files with Rg
 command! -bang -nargs=* Rg
   \ call fzf#vim#grep(
@@ -129,6 +127,10 @@ function! RipgrepFzf(query, fullscreen)
   let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
   call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
 endfunction
+
+"Get Files
+command! -bang -nargs=? -complete=dir Files
+    \ call fzf#vim#files(<q-args>, fzf#vim#with_preview({'options': ['--layout=reverse', '--info=inline']}), <bang>0)
 
 command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
 
@@ -154,6 +156,7 @@ nnoremap <leader>ft :NERDTreeToggle<CR>
 " fzr remaps
 nnoremap <s-f> :Files<CR>
 nnoremap <c-p> :Gfiles<CR>
+nnoremap <leader>rg :Rg<CR>
 " unmap <esc> binding for fzf buffer if binding exists or suppress unmap error
 au filetype fzf silent! tunmap <esc>
 " quickfixlist remaps
