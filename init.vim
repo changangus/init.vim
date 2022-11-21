@@ -95,7 +95,7 @@ let g:fzf_tags_command = 'ctags -R'
 " Border color
 let g:fzf_layout = {'up':'~90%', 'window': { 'width': 0.8, 'height': 0.8,'yoffset':0.5,'xoffset': 0.5, 'highlight': 'Todo', 'border': 'sharp' } }
 
-let $FZF_DEFAULT_COMMAND="rg --files --hidden"
+let $FZF_DEFAULT_COMMAND="rg --files --hidden --follow --no-ignore-vcs"
 
 " Customize fzf colors to match your color scheme
 let g:fzf_colors =
@@ -117,7 +117,7 @@ let g:fzf_colors =
 command! -bang -nargs=* Rg
   \ call fzf#vim#grep(
   \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1,
-  \   fzf#vim#with_preview({'options': ['--layout=reverse', '--info=inline']}), <bang>0)
+  \   fzf#vim#with_preview({'options': ['--layout=reverse', '--info=inline', '-e']}), <bang>0)
 
 " Ripgrep advanced
 function! RipgrepFzf(query, fullscreen)
@@ -129,8 +129,8 @@ function! RipgrepFzf(query, fullscreen)
 endfunction
 
 "Get Files
-command! -bang -nargs=? -complete=dir Files
-    \ call fzf#vim#files(<q-args>, fzf#vim#with_preview({'options': ['--layout=reverse', '--info=inline']}), <bang>0)
+command! -bang -nargs=? -complete=dir GFiles
+    \ call fzf#vim#gitfiles(<q-args>, fzf#vim#with_preview({'options': ['--layout=reverse', '--info=inline']}), <bang>0)
 
 command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
 
@@ -149,13 +149,10 @@ nnoremap <leader>v :vsplit<CR>
 nnoremap <leader>> :vsplit \| :terminal<CR>
 " remove highlights from search 
 nnoremap <leader>nh :noh<CR>
-" terminal remaps
-tnoremap xx <c-\><c-n>
 " nerdtree remaps
 nnoremap <leader>ft :NERDTreeToggle<CR>
 " fzr remaps
-nnoremap <s-f> :Files<CR>
-nnoremap <c-p> :Gfiles<CR>
+nnoremap <s-f> :GFiles<CR>
 nnoremap <leader>rg :Rg<CR>
 " unmap <esc> binding for fzf buffer if binding exists or suppress unmap error
 au filetype fzf silent! tunmap <esc>
