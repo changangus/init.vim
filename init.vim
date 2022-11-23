@@ -69,11 +69,13 @@ Plug 'ryanoasis/vim-devicons'
 " Harpoon 
 Plug 'nvim-lua/plenary.nvim' " don't forget to add this one if you don't have it yet!
 Plug 'ThePrimeagen/harpoon'
+" Airline
 Plug 'airblade/vim-rooter'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+" Git Blame
+Plug 'zivyangll/git-blame.vim'
 call plug#end()
-
 
 let NERDTreeStatusline="%{matchstr(getline('.'), '\\s\\zs\\w\\(.*\\)')}"
 
@@ -93,7 +95,7 @@ hi Directory guibg=NONE ctermbg=NONE
 
 let g:fzf_tags_command = 'ctags -R'
 " Border color
-let g:fzf_layout = {'up':'~90%', 'window': { 'width': 0.8, 'height': 0.8,'yoffset':0.5,'xoffset': 0.5, 'highlight': 'Todo', 'border': 'sharp' } }
+let g:fzf_layout = {'up':'~90%', 'window': { 'width': 0.9, 'height': 0.9,'yoffset':0.5,'xoffset': 1, 'highlight': 'Todo', 'border': 'sharp' } }
 
 let $FZF_DEFAULT_COMMAND="rg --files --hidden --follow --no-ignore-vcs"
 
@@ -144,9 +146,6 @@ let mapleader = " "
 nnoremap <leader>pv :Vex<CR>
 nnoremap <leader><CR> :so ~/.config/nvim/init.vim<CR>
 nnoremap <nowait> <leader>e :q<CR>
-nnoremap <leader>s :15 split \| :terminal<CR>
-nnoremap <leader>v :vsplit<CR>
-nnoremap <leader>> :vsplit \| :terminal<CR>
 " remove highlights from search 
 nnoremap <leader>nh :noh<CR>
 " nerdtree remaps
@@ -180,4 +179,6 @@ xnoremap <leader>y "*y<CR>
 " Harpoon remaps
 nnoremap <leader>lv :lua require'harpoon.ui'.toggle_quick_menu()<CR>
 nnoremap <leader>la :lua require'harpoon.mark'.add_file()<CR>
+" 
+nnoremap <leader>s :<C-u>call gitblame#echo()<CR>
 source $HOME/.config/nvim/plug-config/coc.vim
