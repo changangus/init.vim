@@ -75,6 +75,8 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 " Git Blame
 Plug 'zivyangll/git-blame.vim'
+" prisma sytnax higlighting 
+Plug 'pantharshit00/vim-prisma'
 call plug#end()
 
 let NERDTreeStatusline="%{matchstr(getline('.'), '\\s\\zs\\w\\(.*\\)')}"
@@ -181,4 +183,5 @@ nnoremap <leader>lv :lua require'harpoon.ui'.toggle_quick_menu()<CR>
 nnoremap <leader>la :lua require'harpoon.mark'.add_file()<CR>
 " 
 nnoremap <leader>s :<C-u>call gitblame#echo()<CR>
+nnoremap <silent> K :call <SID>show_documentation()<CR>
 source $HOME/.config/nvim/plug-config/coc.vim
