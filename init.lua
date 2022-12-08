@@ -11,6 +11,7 @@ g.markdown_folding = 1
 g.airline_theme = 'angr'
 g.user_emmet_leader_key = ','
 g.gitblame_enabled = 0
+g.NERDTreeShowHidden = 1
 
 -- Options:
 opt.scrolloff = 8
@@ -255,7 +256,7 @@ else
 end
 
 -- Vim Command Remaps:
-vim.keymap.set('n', '<leader><CR>', ':so ~/.config/nvim/init.lua<CR>', { noremap = true })
+vim.keymap.set('n', '<leader><CR>', ':luafile ~/.config/nvim/init.lua<CR>', { noremap = true })
 vim.keymap.set('n', '<leader>e', ':q<CR>', { noremap = true })
 vim.keymap.set('n', '<c-h>', '<c-w>h', { noremap = true })
 vim.keymap.set('n', '<c-j>', '<c-w>j', { noremap = true })
