@@ -77,6 +77,8 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'zivyangll/git-blame.vim'
 " prisma sytnax higlighting 
 Plug 'pantharshit00/vim-prisma'
+" vimspector debugging 
+Plug 'puremourning/vimspector'
 call plug#end()
 
 let NERDTreeStatusline="%{matchstr(getline('.'), '\\s\\zs\\w\\(.*\\)')}"
@@ -181,7 +183,24 @@ xnoremap <leader>y "*y<CR>
 " Harpoon remaps
 nnoremap <leader>lv :lua require'harpoon.ui'.toggle_quick_menu()<CR>
 nnoremap <leader>la :lua require'harpoon.mark'.add_file()<CR>
-" 
+" gitblame 
 nnoremap <leader>s :<C-u>call gitblame#echo()<CR>
+" show docs for variables
 nnoremap <silent> K :call <SID>show_documentation()<CR>
+" puremourning/vimspector
+let g:vimspector_sidebar_width = 60
+let g:vimspector_code_minwidth = 90
+let g:vimspector_terminal_maxwidth = 75
+let g:vimspector_terminal_minwidth = 20
+nnoremap <leader>da :call vimspector#Launch()<CR>
+nnoremap <leader>dx :call vimspector#Reset()<CR>
+nnoremap <F12> :call vimspector#StepOut()<CR>
+nnoremap <F11> :call vimspector#StepInto()<CR>
+nnoremap <F10> :call vimspector#StepOver()<CR>
+nnoremap <leader>dre :call vimspector#Restart()<CR>
+nnoremap <leader>dn :call vimspector#Continue()<CR>
+nnoremap <leader>drc :call vimspectorRunToCursor()<CR>
+nnoremap <leader>dh :call vimspector#ToggleBreakpoint()<CR>
+nnoremap <leader>de :call vimspector#ToggleConditionalBreakpoint()<CR>
+nnoremap <leader>dX :call vimspector#ClearBreakpoints()<CR>
 source $HOME/.config/nvim/plug-config/coc.vim
