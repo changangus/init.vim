@@ -10,6 +10,7 @@ g.mapleader = " "
 g.markdown_folding = 1
 g.airline_theme = 'angr'
 g.user_emmet_leader_key = ','
+g.gitblame_enabled = 0
 
 -- Options:
 opt.scrolloff = 8
