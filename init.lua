@@ -30,6 +30,8 @@ opt.filetype = "indent"
 opt.filetype = "plugin"
 opt.syntax = "on"
 opt.mouse = "a"
+opt.winheight = 20
+opt.undofile = true
 
 -- Commands:
 cmd('colorscheme codedark')
