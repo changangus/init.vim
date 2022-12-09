@@ -80,9 +80,8 @@ packer.startup(function(use)
   use 'preservim/nerdtree'
   -- Git Gutter
   use 'airblade/vim-gitgutter'
-  -- Auto Save
-  use 'Pocco81/auto-save.nvim'
-
+  -- autoclose
+  use 'm4xshen/autoclose.nvim'
   -- Themes:
   use 'tomasiser/vim-code-dark'
 
@@ -100,11 +99,8 @@ packer.startup(function(use)
   use 'preservim/vim-markdown'
   -- prisma sytnax higlighting
   use 'pantharshit00/vim-prisma'
-
   -- Startup Screen
   use 'mhinz/vim-startify'
-  -- Autoclose pairs
-  use 'jiangmiao/auto-pairs'
   -- Emmet HTML
   use 'mattn/emmet-vim'
   -- Code Snippets
@@ -130,8 +126,24 @@ packer.startup(function(use)
   }
   -- Git Blame
   use 'f-person/git-blame.nvim'
-  -- vimspector debugging
-  use 'puremourning/vimspector'
+  -- autocomplete for lsp
+  use 'hrsh7th/nvim-cmp'
+  use 'hrsh7th/cmp-nvim-lsp'
+  use 'hrsh7th/cmp-buffer'
+  use 'onsails/lspkind.nvim'
+  use({ "L3MON4D3/LuaSnip" })
+  -- surround text
+  use {
+    "ur4ltz/surround.nvim",
+    config = function()
+      require "surround".setup { mappings_style = "sandwich" }
+    end
+  }
+  -- Prettier
+  use('jose-elias-alvarez/null-ls.nvim')
+  use('MunifTanjim/prettier.nvim')
+  -- nvim dap
+  use 'mfussenegger/nvim-dap'
 end)
 
 -- LSP Config:
@@ -193,10 +205,14 @@ nvim_lsp.sumneko_lua.setup {
 }
 
 -- Typescript
+-- Set up completion using nvim_cmp with LSP source
+local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
+
 nvim_lsp.tsserver.setup {
   on_attach = on_attach,
   filetypes = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx" },
   cmd = { "typescript-language-server", "--stdio" },
+  capabilities = capabilities,
 }
 
 -- Python
@@ -206,8 +222,47 @@ nvim_lsp.pylsp.setup {
   cmd = { "pylsp" },
   flags = {
     debounce_text_changes = 150,
-  }
+  },
+  capabilities = capabilities,
 }
+
+-- setup nvim-cmp
+local status, cmp = pcall(require, 'cmp')
+if (not status) then return end
+local lspkind = require('lspkind')
+
+cmp.setup({
+  snippet = {
+    expand = function(args)
+      vim.fn["vsnip#anonymous"](args.body)
+    end,
+  },
+  mapping = {
+    ['<C-p>'] = cmp.mapping.select_prev_item(),
+    ['<C-n>'] = cmp.mapping.select_next_item(),
+    ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+    ['<C-Space>'] = cmp.mapping.complete(),
+    ['<C-e>'] = cmp.mapping.close(),
+    ['<CR>'] = cmp.mapping.confirm({
+      behavior = cmp.ConfirmBehavior.Replace,
+      select = true,
+    }),
+  },
+  sources = {
+    { name = 'nvim_lsp' },
+    { name = 'buffer' },
+    { name = 'vsnip' },
+  },
+  formatting = {
+    format = lspkind.cmp_format({ with_text = false, maxwidth = 50 })
+  }
+})
+
+vim.cmd [[
+  set completeopt=menuone,noinsert,noselect
+  highlight! default link CmpItemKind CmpItemMenuDefault
+]]
 
 -- lsputils chunk from repo README
 if vim.fn.has('nvim-0.5.1') == 1 then
@@ -257,7 +312,9 @@ end
 
 -- Vim Command Remaps:
 vim.keymap.set('n', '<leader><CR>', ':luafile ~/.config/nvim/init.lua<CR>', { noremap = true })
+vim.keymap.set('n', '<leader>s', ':wq<CR>', { noremap = true })
 vim.keymap.set('n', '<leader>e', ':q<CR>', { noremap = true })
+vim.keymap.set('n', '<leader>w', ':w<CR>', { noremap = true })
 vim.keymap.set('n', '<c-h>', '<c-w>h', { noremap = true })
 vim.keymap.set('n', '<c-j>', '<c-w>j', { noremap = true })
 vim.keymap.set('n', '<c-k>', '<c-w>k', { noremap = true })
@@ -287,7 +344,7 @@ require("telescope").setup({
   },
 })
 local builtin = require('telescope.builtin')
-vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
+vim.keymap.set('n', '<S-f>', builtin.find_files, {})
 vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
 vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
 vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
@@ -306,3 +363,88 @@ require('lualine').setup {
     lualine_c = { 'filename' },
   }
 }
+
+-- surround
+require "surround".setup {
+  context_offset = 100,
+  load_autogroups = false,
+  mappings_style = "sandwich",
+  map_insert_mode = true,
+  quotes = { "'", '"' },
+  brackets = { "(", '{', '[' },
+  space_on_closing_char = false,
+  pairs = {
+    nestable = { b = { "(", ")" }, s = { "[", "]" }, B = { "{", "}" }, a = { "<", ">" } },
+    linear = { q = { "'", "'" }, t = { "`", "`" }, d = { '"', '"' } }
+  },
+  prefix = "S",
+}
+
+-- null-ls
+local null_ls = require("null-ls")
+
+local group = vim.api.nvim_create_augroup("lsp_format_on_save", { clear = false })
+local event = "BufWritePre" -- or "BufWritePost"
+local async = event == "BufWritePost"
+
+null_ls.setup({
+  on_attach = function(client, bufnr)
+    if client.supports_method("textDocument/formatting") then
+      vim.keymap.set("n", "<Leader>fl", function()
+        vim.lsp.buf.format({ bufnr = vim.api.nvim_get_current_buf() })
+      end, { buffer = bufnr, desc = "[lsp] format" })
+
+      -- format on save
+      vim.api.nvim_clear_autocmds({ buffer = bufnr, group = group })
+      vim.api.nvim_create_autocmd(event, {
+        buffer = bufnr,
+        group = group,
+        callback = function()
+          vim.lsp.buf.format({ bufnr = bufnr, async = async })
+        end,
+        desc = "[lsp] format on save",
+      })
+    end
+
+    if client.supports_method("textDocument/rangeFormatting") then
+      vim.keymap.set("x", "<Leader>f", function()
+        vim.lsp.buf.format({ bufnr = vim.api.nvim_get_current_buf() })
+      end, { buffer = bufnr, desc = "[lsp] format" })
+    end
+  end,
+})
+
+-- Prettier
+local prettier = require("prettier")
+
+prettier.setup({
+  bin = 'prettier', -- or `'prettierd'` (v0.22+)
+  filetypes = {
+    "css",
+    "graphql",
+    "html",
+    "javascript",
+    "javascriptreact",
+    "json",
+    "less",
+    "markdown",
+    "scss",
+    "typescript",
+    "typescriptreact",
+    "yaml",
+  },
+  ["null-ls"] = {
+    condition = function()
+      return prettier.config_exists({
+        -- if `false`, skips checking `package.json` for `"prettier"` key
+        check_package_json = true,
+      })
+    end,
+    runtime_condition = function(params)
+      -- return false to skip running prettier
+      return true
+    end,
+    timeout = 5000,
+  },
+})
+
