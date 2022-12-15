@@ -145,7 +145,8 @@ packer.startup(function(use)
 end)
 
 -- Coc Command remaps
-vim.keymap.set('n', '<leader>fl', ':CocCommand prettier.formatFile<cr>', { noremap = true })
+vim.keymap.set('n', '<leader>ff', ':CocCommand prettier.formatFile<cr>', { noremap = true })
+vim.keymap.set('n', '<leader>fl', ':CocCommand eslint.executeAutofix<cr>', { noremap = true })
 -- Some servers have issues with backup files, see #649.
 vim.opt.backup = false
 vim.opt.writebackup = false
