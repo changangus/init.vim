@@ -341,7 +341,12 @@ vim.keymap.set('n', '<c-k>', '<c-w>k', { noremap = true })
 vim.keymap.set('n', '<c-l>', '<c-w>l', { noremap = true })
 vim.keymap.set('n', '<leader>nh', ':noh<CR>', { noremap = true })
 vim.keymap.set('x', '<leader>y', '"+y', { noremap = true })
-vim.keymap.set('n', '<leader>rp', ':let @+=expand("%:")<CR>', { noremap = true })
+vim.keymap.set('n', '<leader>rp', ':let @+ = expand("%")<CR>', { noremap = true })
+-- Move lines up and down
+vim.keymap.set('n', '<leader>j', ':.move +1<CR>')
+vim.keymap.set('n', '<leader>k', ':.move -2<CR>')
+vim.keymap.set('v', '<leader>j', ":'<,'>move '>+1 | normal! gv<CR>")
+vim.keymap.set('v', '<leader>k', ":'<,'>move '<-2 | normal! gv<CR>")
 
 -- Harpoon
 vim.keymap.set('n', '<leader>lv', ':lua require("harpoon.ui").toggle_quick_menu()<CR>', { noremap = true })
@@ -349,9 +354,7 @@ vim.keymap.set('n', '<leader>la', ':lua require("harpoon.mark").add_file()<CR>',
 
 -- NERDTree
 vim.keymap.set('n', '<leader>ft', ':NERDTreeToggle<CR>', { noremap = true })
-
--- GitBlame
-vim.keymap.set('n', '<leader>gb', ':<C-u>call gitblame#echo()<CR>', { noremap = true })
+vim.keymap.set('n', '<leader>nf', ':NERDTreeFind<CR>', { noremap = true })
 
 -- Telescope.nvim
 require("telescope").setup({
@@ -379,8 +382,10 @@ require('lualine').setup {
   options = { theme = 'ayu_mirage' },
   sections = {
     lualine_a = { 'mode' },
-    lualine_b = { 'branch' },
-    lualine_c = { 'filename' },
+    lualine_b = { 'filename' },
+    lualine_c = { 'branch' },
+    lualine_y = {},
+    lualine_z = {},
   }
 }
 
