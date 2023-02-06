@@ -7,11 +7,11 @@ local execute = vim.api.nvim_command
 
 -- Global Variables:
 g.mapleader = " "
-g.markdown_folding = 1
 g.airline_theme = 'angr'
 g.user_emmet_leader_key = ','
 g.gitblame_enabled = 0
 g.NERDTreeShowHidden = 1
+g.markdown_fenced_languages = {'javascript=javascriptreact', 'typescript=typescript', 'tsx=typescriptreact', 'ts=typescriptreact'  }
 
 -- Options:
 opt.scrolloff = 8
@@ -32,6 +32,8 @@ opt.syntax = "on"
 opt.mouse = "a"
 opt.winheight = 20
 opt.undofile = true
+opt.cursorline = true
+opt.termguicolors = true
 
 -- Commands:
 cmd('colorscheme codedark')
@@ -44,6 +46,7 @@ cmd('highlight StatusLineNC gui=NONE cterm=NONE')
 cmd('highlight EndOfBuffer guibg=NONE ctermbg=NONE')
 cmd('highlight Directory gui=NONE cterm=NONE')
 cmd('highlight WinSeparator gui=NONE cterm=NONE')
+cmd('highlight CursorLine guibg=#403257')
 
 -- ensure that packer is installed
 local install_path = fn.stdpath('data') .. '/site/pack/packer/opt/packer.nvim'
@@ -67,6 +70,7 @@ packer.startup(function(use)
   use { 'neoclide/coc.nvim', branch = 'release' }
   use 'lervag/vimtex'
   -- Telescope.nvim
+  use 'fannheyward/telescope-coc.nvim'
   use {
     'nvim-telescope/telescope.nvim', tag = '0.1.0',
     -- or                            , branch = '0.1.x',
@@ -81,6 +85,10 @@ packer.startup(function(use)
   use 'tomasiser/vim-code-dark'
 
   -- SYNTAX HIGHLIGHTING:
+  use {
+    'nvim-treesitter/nvim-treesitter',
+    run = ':TSUpdate'
+  }
 
   -- JavaScript/Typescript/JSX/TSX:
   use 'pangloss/vim-javascript'
@@ -89,11 +97,9 @@ packer.startup(function(use)
   use 'mxw/vim-jsx'
   -- syntax highlight for .sol
   use 'tomlion/vim-solidity'
-  -- syntax highlight for .md
-  use 'godlygeek/tabular'
-  use 'preservim/vim-markdown'
   -- prisma sytnax higlighting
   use 'pantharshit00/vim-prisma'
+
   -- Startup Screen
   use 'mhinz/vim-startify'
   -- Emmet HTML
@@ -142,7 +148,11 @@ packer.startup(function(use)
   use({
 	"Pocco81/auto-save.nvim",
   })
+  use {
+    'numToStr/Comment.nvim',
+  }
 end)
+
 
 -- Coc Command remaps
 vim.keymap.set('n', '<leader>ff', ':CocCommand prettier.formatFile<cr>', { noremap = true })
@@ -190,13 +200,11 @@ keyset("n", "[g", "<Plug>(coc-diagnostic-prev)", {silent = true})
 keyset("n", "]g", "<Plug>(coc-diagnostic-next)", {silent = true})
 
 -- GoTo code navigation.
-keyset("n", "gd", "<Plug>(coc-definition)", {silent = true})
 keyset("n", "gy", "<Plug>(coc-type-definition)", {silent = true})
 keyset("n", "gi", "<Plug>(coc-implementation)", {silent = true})
-keyset("n", "gr", "<Plug>(coc-references)", {silent = true})
 
 
--- Use K to show documentation in preview window.
+-- Use H to show documentation in preview window.
 function _G.show_docs()
     local cw = vim.fn.expand('<cword>')
     if vim.fn.index({'vim', 'help'}, vim.bo.filetype) >= 0 then
@@ -207,7 +215,7 @@ function _G.show_docs()
         vim.api.nvim_command('!' .. vim.o.keywordprg .. ' ' .. cw)
     end
 end
-keyset("n", "K", '<CMD>lua _G.show_docs()<CR>', {silent = true})
+keyset("n", "H", '<CMD>lua _G.show_docs()<CR>', {silent = true})
 
 
 -- Highlight the symbol and its references when holding the cursor.
@@ -343,10 +351,10 @@ vim.keymap.set('n', '<leader>nh', ':noh<CR>', { noremap = true })
 vim.keymap.set('x', '<leader>y', '"+y', { noremap = true })
 vim.keymap.set('n', '<leader>rp', ':let @+ = expand("%")<CR>', { noremap = true })
 -- Move lines up and down
-vim.keymap.set('n', '<leader>j', ':.move +1<CR>')
-vim.keymap.set('n', '<leader>k', ':.move -2<CR>')
-vim.keymap.set('v', '<leader>j', ":'<,'>move '>+1 | normal! gv<CR>")
-vim.keymap.set('v', '<leader>k', ":'<,'>move '<-2 | normal! gv<CR>")
+vim.keymap.set('n', '<S-j>', ':.move +1<CR>')
+vim.keymap.set('n', '<S-k>', ':.move -2<CR>')
+vim.keymap.set('v', '<S-j>', ":'<,'>move '>+1 | normal! gv<CR>")
+vim.keymap.set('v', '<S-k>', ":'<,'>move '<-2 | normal! gv<CR>")
 
 -- Harpoon
 vim.keymap.set('n', '<leader>lv', ':lua require("harpoon.ui").toggle_quick_menu()<CR>', { noremap = true })
@@ -365,12 +373,23 @@ require("telescope").setup({
       },
     },
   },
+  extensions = {
+    coc = {
+      theme = "ivy",
+    }
+  }
 })
+
+require('telescope').load_extension('coc')
+
 local builtin = require('telescope.builtin')
-vim.keymap.set('n', '<S-f>', builtin.find_files, {})
+vim.keymap.set('n', '<leader>fe', builtin.find_files, {})
 vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
 vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
 vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
+vim.keymap.set('n', '<leader>a', ':Telescope coc diagnostics<CR>', {})
+vim.keymap.set('n', 'gd', ':Telescope coc definitions<CR>', {})
+vim.keymap.set('n', 'gr', ':Telescope coc references<CR>', {})
 
 -- GitBlame
 vim.keymap.set('n', '<leader>gb', ':GitBlameToggle<CR>', { noremap = true });
@@ -454,3 +473,10 @@ require("harpoon").setup({
   }
 })
 
+-- Comment.nvim 
+require('Comment').setup({
+  toggler = {
+    line = '<leader>cl',
+    block = '<leader>cb',
+  },
+})
