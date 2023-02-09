@@ -355,6 +355,8 @@ vim.keymap.set('n', '<S-j>', ':.move +1<CR>')
 vim.keymap.set('n', '<S-k>', ':.move -2<CR>')
 vim.keymap.set('v', '<S-j>', ":'<,'>move '>+1 | normal! gv<CR>")
 vim.keymap.set('v', '<S-k>', ":'<,'>move '<-2 | normal! gv<CR>")
+-- Split screen 50% vertically 
+vim.keymap.set('n', '<leader>v', ':vsplit<CR>:resize 50<CR>', { noremap = true })
 
 -- Harpoon
 require("harpoon").setup({
