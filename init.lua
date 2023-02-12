@@ -80,7 +80,7 @@ packer.startup(function(use)
   -- Nerdtree
   use 'preservim/nerdtree'
   -- autoclose
-  use "steelsojka/pears.nvim"
+  use 'jiangmiao/auto-pairs'
   -- Themes:
   use 'tomasiser/vim-code-dark'
 
@@ -152,7 +152,6 @@ packer.startup(function(use)
     'numToStr/Comment.nvim',
   }
 end)
-
 
 -- Coc Command remaps
 vim.keymap.set('n', '<leader>ff', ':CocCommand prettier.formatFile<cr>', { noremap = true })
@@ -528,6 +527,3 @@ require'nvim-treesitter.configs'.setup {
 
 -- Pocco81/AutoSave
 vim.keymap.set('n', '<leader>as', ':ASToggle<CR>', { noremap = false });
-
--- pear.nvim 
-require "pears".setup()
