@@ -377,6 +377,10 @@ require("telescope").setup({
   defaults = {
     initial_mode = "normal",
     path_display = { "truncate" },
+    layout_config = {
+      preview_cutoff = 0,
+      preview_width = 0.6,
+    },
   },
   extensions = {
     coc = {
