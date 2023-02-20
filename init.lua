@@ -64,6 +64,7 @@ packer.init({
 
 -- Plugins:
 packer.startup(function(use)
+  use 'nvim-lua/plenary.nvim' -- required by multiple plugins
   -- Packer can manage itself
   use 'wbthomason/packer.nvim'
   -- Coc
@@ -118,7 +119,6 @@ packer.startup(function(use)
   -- Icons
   use 'ryanoasis/vim-devicons'
   -- Harpoon
-  use 'nvim-lua/plenary.nvim' -- don't forget to add this one if you don't have it yet!
   use 'ThePrimeagen/harpoon'
   -- LuaLine
   use {
@@ -151,6 +151,8 @@ packer.startup(function(use)
   use {
     'numToStr/Comment.nvim',
   }
+  -- diffview
+  use { 'sindrets/diffview.nvim', requires = 'nvim-lua/plenary.nvim' }
 end)
 
 -- Coc Command remaps
@@ -360,7 +362,7 @@ vim.keymap.set('n', '<leader>v', ':vsplit<CR>:resize 50<CR>', { noremap = true }
 -- Harpoon
 require("harpoon").setup({
   menu = {
-    width = 95,
+    width = 110,
     height = 20,
   }
 })
