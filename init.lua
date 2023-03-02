@@ -358,6 +358,13 @@ vim.keymap.set('v', '<S-j>', ":'<,'>move '>+1 | normal! gv<CR>")
 vim.keymap.set('v', '<S-k>', ":'<,'>move '<-2 | normal! gv<CR>")
 -- Split screen 50% vertically 
 vim.keymap.set('n', '<leader>v', ':vsplit<CR>:resize 50<CR>', { noremap = true })
+-- Split screen 10% horizontally
+vim.keymap.set('n', '<leader>vh', ':split<CR>:resize 10<CR>', { noremap = true })
+-- resize windows 
+vim.keymap.set('n', '<F4>', ':vertical resize -5<CR>', { noremap = true })
+vim.keymap.set('n', '<F5>', ':vertical resize +5<CR>', { noremap = true })
+vim.keymap.set('n', '<F6>', ':resize -5<CR>', { noremap = true })
+vim.keymap.set('n', '<F7>', ':resize +5<CR>', { noremap = true })
 
 -- Harpoon
 require("harpoon").setup({
@@ -533,3 +540,7 @@ require'nvim-treesitter.configs'.setup {
 
 -- Pocco81/AutoSave
 vim.keymap.set('n', '<leader>as', ':ASToggle<CR>', { noremap = false });
+
+-- Diffview
+vim.keymap.set('n', '<leader>dv', ':DiffviewOpen<CR>', { noremap = false });
+vim.keymap.set('n', '<leader>dc', ':DiffviewClose<CR>', { noremap = false });
