@@ -7,7 +7,6 @@ local execute = vim.api.nvim_command
 
 -- Global Variables:
 g.mapleader = " "
-g.airline_theme = 'angr'
 g.user_emmet_leader_key = ','
 g.gitblame_enabled = 0
 g.NERDTreeShowHidden = 1
@@ -36,7 +35,6 @@ opt.cursorline = true
 opt.termguicolors = true
 
 -- Commands:
-cmd('colorscheme codedark')
 cmd('highlight Normal guibg=NONE ctermbg=NONE')
 cmd('highlight SignColumn guibg=NONE ctermbg=NONE')
 cmd('highlight LineNr guibg=NONE ctermbg=NONE')
@@ -64,6 +62,7 @@ packer.init({
 
 -- Plugins:
 packer.startup(function(use)
+  use { "catppuccin/nvim", as = "catppuccin" }
   use 'nvim-lua/plenary.nvim' -- required by multiple plugins
   -- Packer can manage itself
   use 'wbthomason/packer.nvim'
@@ -343,7 +342,7 @@ keyset("n", "<space>p", ":<C-u>CocListResume<cr>", opts)
 vim.keymap.set('n', '<leader><CR>', ':luafile ~/.config/nvim/init.lua<CR>', { noremap = true })
 vim.keymap.set('n', '<leader>s', ':wq<CR>', { noremap = true })
 vim.keymap.set('n', '<leader>e', ':q<CR>', { noremap = true })
-vim.keymap.set('n', '<leader>w', ':w<CR>', { noremap = true })
+vim.keymap.set('n', '<leader>w', ':wa<CR>', { noremap = true })
 vim.keymap.set('n', '<c-h>', '<c-w>h', { noremap = true })
 vim.keymap.set('n', '<c-j>', '<c-w>j', { noremap = true })
 vim.keymap.set('n', '<c-k>', '<c-w>k', { noremap = true })
@@ -365,6 +364,18 @@ vim.keymap.set('n', '<F4>', ':vertical resize -5<CR>', { noremap = true })
 vim.keymap.set('n', '<F5>', ':vertical resize +5<CR>', { noremap = true })
 vim.keymap.set('n', '<F6>', ':resize -5<CR>', { noremap = true })
 vim.keymap.set('n', '<F7>', ':resize +5<CR>', { noremap = true })
+
+-- Cattppuccin
+require('catppuccin').setup({
+  highlight_overrides = {
+    all = function(colors)
+      return {
+        ['@constructor.tsx'] = { fg = colors.peach }
+      }
+    end
+  }
+})
+cmd('colorscheme catppuccin')
 
 -- Harpoon
 require("harpoon").setup({
@@ -417,7 +428,7 @@ vim.keymap.set('n', '<leader>gS', ':GitBlameCopySHA<CR>', { noremap = true });
 
 -- LuaLine
 require('lualine').setup {
-  options = { theme = 'ayu_mirage' },
+  options = { theme = 'catppuccin' },
   sections = {
     lualine_a = { 'mode' },
     lualine_b = { 'filename' },
@@ -544,3 +555,4 @@ vim.keymap.set('n', '<leader>as', ':ASToggle<CR>', { noremap = false });
 -- Diffview
 vim.keymap.set('n', '<leader>dv', ':DiffviewOpen<CR>', { noremap = false });
 vim.keymap.set('n', '<leader>dc', ':DiffviewClose<CR>', { noremap = false });
+
