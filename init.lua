@@ -367,15 +367,22 @@ vim.keymap.set('n', '<F7>', ':resize +5<CR>', { noremap = true })
 
 -- Cattppuccin
 require('catppuccin').setup({
+  color_overrides = {
+    mocha = {
+      lavender = '#9ca8f7',
+      green = '#93c993',
+    }
+  },
   highlight_overrides = {
     all = function(colors)
       return {
-        ['@constructor.tsx'] = { fg = colors.peach }
+        ['@constructor.tsx'] = { fg = colors.peach },
+-- https://github.com/catppuccin/nvim/blob/main/lua/catppuccin/groups/integrations/treesitter.lua
       }
     end
   }
 })
-cmd('colorscheme catppuccin')
+cmd('colorscheme catppuccin-mocha')
 
 -- Harpoon
 require("harpoon").setup({
